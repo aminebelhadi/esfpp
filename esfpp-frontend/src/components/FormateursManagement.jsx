@@ -12,7 +12,7 @@ export default function FormateursManagement() {
 
   const fetchFormateurs = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/logigramme/formateurs/details');
+      const res = await axios.get('/api/logigramme/formateurs/details');
       setFormateurs(res.data);
     } catch (error) {
       console.error("Erreur chargement formateurs:", error);
@@ -26,7 +26,7 @@ export default function FormateursManagement() {
   const handleAddFormateur = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/logigramme/formateurs', {
+      await axios.post('/api/logigramme/formateurs', {
         nom: newFormateur.nom,
         prenom: newFormateur.prenom,
         dateNaissance: newFormateur.dateNaissance,
@@ -42,7 +42,7 @@ export default function FormateursManagement() {
   const handleDelete = async (id) => {
     if (window.confirm("Supprimer ce formateur ? Ses modules deviendront 'Non assignés'.")) {
       try {
-        await axios.delete(`http://localhost:8080/api/logigramme/formateurs/${id}`);
+        await axios.delete(`/api/logigramme/formateurs/${id}`);
         fetchFormateurs();
       } catch (error) {
         console.error("Erreur suppression", error);

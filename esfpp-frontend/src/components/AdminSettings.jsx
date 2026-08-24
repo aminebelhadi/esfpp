@@ -20,9 +20,9 @@ export default function AdminSettings() {
   const fetchData = async () => {
     try {
       const [resFilieres, resAnnees, resFormateurs] = await Promise.all([
-        axios.get('http://localhost:8080/api/logigramme/filieres'),
-        axios.get('http://localhost:8080/api/logigramme/annees'),
-        axios.get('http://localhost:8080/api/logigramme/formateurs')
+        axios.get('/api/logigramme/filieres'),
+        axios.get('/api/logigramme/annees'),
+        axios.get('/api/logigramme/formateurs')
       ]);
       setFilieres(resFilieres.data);
       setAnnees(resAnnees.data);
@@ -45,7 +45,7 @@ export default function AdminSettings() {
     if (selectedFiliereId) {
       const fetchModules = async () => {
         try {
-          const res = await axios.get(`http://localhost:8080/api/logigramme/modules/filiere/${selectedFiliereId}`);
+          const res = await axios.get(`/api/logigramme/modules/filiere/${selectedFiliereId}`);
           setModulesListe(res.data);
         } catch (error) {
           console.error("Erreur chargement modules:", error);
@@ -59,7 +59,7 @@ export default function AdminSettings() {
   const handleAddFiliere = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/logigramme/filieres', newFiliere);
+      await axios.post('/api/logigramme/filieres', newFiliere);
       setNewFiliere({ nomFiliere: '', niveau: '1A' });
       fetchData();
     } catch (error) {
@@ -70,7 +70,7 @@ export default function AdminSettings() {
   const handleDeleteFiliere = async (id) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette filière ? (Cela supprimera aussi ses modules)")) {
       try {
-        await axios.delete(`http://localhost:8080/api/logigramme/filieres/${id}`);
+        await axios.delete(`/api/logigramme/filieres/${id}`);
         fetchData();
         if (id.toString() === selectedFiliereId) {
           setSelectedFiliereId('');
@@ -86,7 +86,7 @@ export default function AdminSettings() {
   const handleAddAnnee = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/logigramme/annees', {
+      await axios.post('/api/logigramme/annees', {
         libelle: newAnnee.libelle,
         estActive: true 
       });
@@ -100,7 +100,7 @@ export default function AdminSettings() {
   const handleDeleteAnnee = async (id) => {
     if (window.confirm("Supprimer cette année scolaire ?")) {
       try {
-        await axios.delete(`http://localhost:8080/api/logigramme/annees/${id}`);
+        await axios.delete(`/api/logigramme/annees/${id}`);
         fetchData();
       } catch (error) {
         console.error("Erreur suppression année", error);
@@ -112,7 +112,7 @@ export default function AdminSettings() {
   const handleAddModule = async (e) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:8080/api/logigramme/modules/filiere/${selectedFiliereId}${newModule.formateurId ? `?formateurId=${newModule.formateurId}` : ''}`;
+      const url = `/api/logigramme/modules/filiere/${selectedFiliereId}${newModule.formateurId ? `?formateurId=${newModule.formateurId}` : ''}`;
       
       await axios.post(url, {
         nomModule: newModule.nomModule,
@@ -121,7 +121,7 @@ export default function AdminSettings() {
       
       setNewModule({ nomModule: '', volumeHoraireGlobal: '', formateurId: '' });
       
-      const res = await axios.get(`http://localhost:8080/api/logigramme/modules/filiere/${selectedFiliereId}`);
+      const res = await axios.get(`/api/logigramme/modules/filiere/${selectedFiliereId}`);
       setModulesListe(res.data);
     } catch (error) {
       console.error("Erreur ajout module", error);
@@ -131,7 +131,7 @@ export default function AdminSettings() {
   const handleDeleteModule = async (id) => {
     if (window.confirm("Supprimer ce module ?")) {
       try {
-        await axios.delete(`http://localhost:8080/api/logigramme/modules/${id}`);
+        await axios.delete(`/api/logigramme/modules/${id}`);
         setModulesListe(modulesListe.filter(m => m.id !== id));
       } catch (error) {
         console.error("Erreur suppression module", error);

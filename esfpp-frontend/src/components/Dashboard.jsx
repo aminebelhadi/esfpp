@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LayoutDashboard, AlertTriangle, TrendingUp, CalendarClock, Info, CheckCircle2, Loader2 } from 'lucide-react';
 import './logigrame.css';
@@ -10,7 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/logigramme/dashboard');
+        const response = await axios.get('/api/logigramme/dashboard');
         setData(response.data);
       } catch (error) {
         console.error("Erreur chargement dashboard :", error);
