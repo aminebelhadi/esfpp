@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from '../config/axiosConfig';
 import { CalendarDays, Save, Loader2, Download } from 'lucide-react';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
@@ -37,8 +37,8 @@ export default function MatriceLogigramme() {
     const fetchInitialData = async () => {
       try {
         const [resFilieres, resAnnees] = await Promise.all([
-          axios.get('/api/logigramme/filieres'),
-          axios.get('/api/logigramme/annees') 
+          api.get('/api/logigramme/filieres'),
+          api.get('/api/logigramme/annees') 
         ]);
 
         setFilieres(resFilieres.data);
@@ -63,8 +63,8 @@ export default function MatriceLogigramme() {
     setLoading(true);
     try {
       const [resModules, resEvenements] = await Promise.all([
-        axios.get(`/api/logigramme/modules/filiere/${filiereId}`),
-        axios.get(`/api/logigramme/evenements/filiere/${filiereId}`)
+        api.get(`/api/logigramme/modules/filiere/${filiereId}`),
+        api.get(`/api/logigramme/evenements/filiere/${filiereId}`)
       ]);
 
       const modulesFormates = resModules.data.map(mod => ({
@@ -99,7 +99,7 @@ export default function MatriceLogigramme() {
   const handleSaveEvent = async (typeEvent) => {
     if (!eventModal) return;
     try {
-      await axios.post(`/api/logigramme/evenements/filiere/${filiereId}?semaineIndex=${eventModal.semaine}&type=${typeEvent}`);
+      await api.post(`/api/logigramme/evenements/filiere/${filiereId}?semaineIndex=${eventModal.semaine}&type=${typeEvent}`);
       setEventModal(null);
       fetchLogigrammeData(); 
     } catch (error) {
@@ -124,7 +124,7 @@ export default function MatriceLogigramme() {
     });
 
     try {
-      await axios.post('/api/logigramme/planifications/bulk', payload);
+      await api.post('/api/logigramme/planifications/bulk', payload);
       alert("Planification enregistrée avec succès !");
       fetchLogigrammeData(); 
     } catch (error) {

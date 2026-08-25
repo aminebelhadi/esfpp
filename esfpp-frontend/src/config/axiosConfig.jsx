@@ -1,5 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
 
-axios.defaults.baseURL = apiUrl;
+const api = axios.create({
+
+    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
+});
+
+
+export default api;

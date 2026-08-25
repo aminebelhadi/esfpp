@@ -6,7 +6,7 @@ import FormateursManagement from './components/FormateursManagement'
 import Dashboard from './components/Dashboard'
 
 function App() {
-  console.log("TEST DOCKER URL :", import.meta.env.VITE_BACKEND_URL);
+
   return (
     <BrowserRouter>
       <div className="root-layout">
